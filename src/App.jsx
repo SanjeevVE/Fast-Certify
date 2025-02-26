@@ -3,6 +3,7 @@ import { CertificateForm } from './Components/CertificateForm';
 import { CertificatePreview } from './Components/CertificatePreview';
 import { db } from '../firebaseConfig';
 import { collection, addDoc } from 'firebase/firestore';
+import { ClipLoader } from 'react-spinners';
 import './app.css';
 
 function App() {
@@ -66,30 +67,39 @@ function App() {
   };
 
   return (
-    <div className="App text-center mt-20">
-      {isLoading && <p>Generating PDF...</p>}
-      {error && <p className="text-red-500">{error}</p>}
-      <h1 className="text-2xl font-bold pb-5">Generate Certificate</h1>
+    <div className="App flex flex-col items-center justify-center min-h-screen bg-gradient-to-r from-blue-200 to-purple-300 p-8 text-center">
+      <div className="bg-white shadow-xl rounded-lg p-8 w-full max-w-3xl border border-gray-200 flex flex-col items-center">
+        <h1 className="text-3xl font-extrabold text-center pb-6 text-gray-800">Generate Certificate</h1>
 
-      <CertificateForm
-        text={text}
-        setText={setText}
-        fontSize={fontSize}
-        setFontSize={setFontSize}
-        fontFamily={fontFamily}
-        setFontFamily={setFontFamily}
-        textColor={textColor}
-        setTextColor={setTextColor}
-        generatePdf={generatePdf}
-      />
+        {isLoading && (
+          <div className="flex justify-center mb-4">
+            <ClipLoader size={35} color="#4A90E2" loading={isLoading} />
+          </div>
+        )}
+        {error && <p className="text-red-600 text-center mb-4 font-semibold">{error}</p>}
 
-      <CertificatePreview
-        text={text}
-        fontSize={fontSize}
-        fontFamily={fontFamily}
-        textColor={textColor}
-        imageUrl={imageUrl}
-      />
+        <div className="w-full flex flex-col items-center">
+          <CertificateForm
+            text={text}
+            setText={setText}
+            fontSize={fontSize}
+            setFontSize={setFontSize}
+            fontFamily={fontFamily}
+            setFontFamily={setFontFamily}
+            textColor={textColor}
+            setTextColor={setTextColor}
+            generatePdf={generatePdf}
+          />
+
+          <CertificatePreview
+            text={text}
+            fontSize={fontSize}
+            fontFamily={fontFamily}
+            textColor={textColor}
+            imageUrl={imageUrl}
+          />
+        </div>
+      </div>
     </div>
   );
 }
